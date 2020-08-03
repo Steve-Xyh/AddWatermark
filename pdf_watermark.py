@@ -57,7 +57,8 @@ def create_watermark(content) -> PdfFileReader:
     wm_canvas.setFillAlpha(0.2)
     wm_canvas.rotate(45)
 
-    x_step = 10
+    content += ' '*3
+    x_step = len(content)
     y_step = 5
     for x in range(-10, 10):
         for y in range(-10, 10):
@@ -65,7 +66,7 @@ def create_watermark(content) -> PdfFileReader:
 
     wm_canvas.restoreState()
     wm_canvas.save()
-    pdf_watermark = PdfFileReader(open(watermark_pdf, "rb"))
+    pdf_watermark = PdfFileReader(open(watermark_pdf, "rb"), strict=False)
 
     return pdf_watermark
 
@@ -73,7 +74,7 @@ def create_watermark(content) -> PdfFileReader:
 def add_watermark(input_file, watermark_file: PdfFileReader, output_file):
     pdf_output = PdfFileWriter()
     input_stream = open(input_file, 'rb')
-    pdf_input = PdfFileReader(input_stream)
+    pdf_input = PdfFileReader(input_stream, strict=False)
 
     page_num = pdf_input.getNumPages()
 
